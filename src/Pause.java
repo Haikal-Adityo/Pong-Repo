@@ -9,8 +9,7 @@ public class Pause {
 
     GamePanel gp;
     Graphics2D g2;
-
-    Color white = new Color(251, 255, 246);
+    
     Color greyT = new Color(17, 17, 17, 71);
 
     public Pause(GamePanel gp) {
