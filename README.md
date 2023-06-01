@@ -1,2 +1,2 @@
-# Pong-Repo
+# Pong-Repository
 Final Project PBO
