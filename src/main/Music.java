@@ -1,5 +1,4 @@
-
-
+package main;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -7,7 +6,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 
-public class SoundEffect {
+public class Music {
 
     Clip clip;
     File[] soundURL = new File[10];
@@ -15,18 +14,19 @@ public class SoundEffect {
     static float previousVolume = 0;
     static float currentVolume = -17;
     static boolean mute = false;
+    static long clipTimePosition;
 
-    public SoundEffect() {
+    public Music() {
 
-        File paddle = new File("sound/Paddle.wav");
-        File wall = new File("sound/Wall.wav");
-        File score = new File("sound/Score.wav");
-        File select = new File("sound/SelectBeep.wav");
+        String[] soundPaths = {
+                "sound/BGM.wav"
+        };
 
-        soundURL[0] = paddle;
-        soundURL[1] = wall;
-        soundURL[2] = score;
-        soundURL[3] = select;
+        File[] soundFiles = new File[soundPaths.length];
+        for (int i = 0; i < soundPaths.length; i++) {
+            soundFiles[i] = new File(soundPaths[i]);
+            soundURL[i] = soundFiles[i];
+        }
     }
 
     public void setFile(int i) {
@@ -58,17 +58,31 @@ public class SoundEffect {
         clip.stop();
     }
 
-    public void volumeMute() {
-        if (mute == false) {
+    public void pause() {
+        clipTimePosition = clip.getMicrosecondPosition();
+        clip.stop();
+    }
+
+    public void resume() {
+        clip.setMicrosecondPosition(clipTimePosition);
+        clip.start();
+    }
+
+    public static void volumeMute() {
+        if (!mute) {
             previousVolume = currentVolume;
             currentVolume = -80.0f;
             fc.setValue(currentVolume);
             mute = true;
+            System.out.println("Muted");
         }
-        else if (mute == true) {
+        else {
             currentVolume = previousVolume;
+            fc.setValue(currentVolume);
             mute = false;
+            System.out.println("Not muted");
         }
     }
 
 }
+

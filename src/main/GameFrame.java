@@ -1,7 +1,8 @@
+package main;
 
+import main.GamePanel;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class GameFrame extends JFrame {
@@ -10,6 +11,8 @@ public class GameFrame extends JFrame {
 
     public GameFrame() {
 
+        JFrame frame = new JFrame();        
+        
         GamePanel gamePanel = new GamePanel();
         this.add(gamePanel);
         this.pack();

@@ -1,20 +1,20 @@
+package main;
+
+import data.SaveData;
+import main.GameFrame;
+import main.Main;
+import main.SoundEffect;
+
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class GameOver extends JFrame {
-    static final int screenWidth = 1000;
-    static final int screenHeight = (int)(screenWidth * (0.5555));
-    static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
+
     static int winnerId;
     String winner;
     Main main;
+    GameFrame gameFrame;
 
     SoundEffect soundEffect = new SoundEffect();
 
@@ -23,9 +23,9 @@ public class GameOver extends JFrame {
         Color grey = new Color(17, 17, 17);
 
         JFrame frame = new JFrame();
-        frame.setTitle("PONG");
-        frame.setSize(screenSize);
         frame.setBackground(grey);
+        frame.setTitle("PONG");
+        frame.setSize(Main.screenSize);
 
         JPanel gameMenu = new JPanel();
         gameMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,19 +49,20 @@ public class GameOver extends JFrame {
 
         JLabel gameWinner = new JLabel(winner, SwingConstants.CENTER);
         gameWinner.setForeground(Color.white);
-        gameWinner.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 200));
+        gameWinner.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 200 : 100));
         gameMenu.add(gameWinner, BorderLayout.CENTER);
 
-        // * Start button
+        // * START AGAIN BUTTON
         JButton startButton = new JButton("START AGAIN");
-        startButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        startButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
+        startButton.setPreferredSize(new Dimension(200, 55));
         startButton.setBackground(grey);
         startButton.setForeground(Color.WHITE);
         startButton.setFocusable(false);
         startButton.addActionListener(actionEvent -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
+            GamePanel.saveData.load();
 
             frame.dispose();
             Main.gameFrame = new GameFrame();
@@ -72,14 +73,14 @@ public class GameOver extends JFrame {
 
         // * Menu button
         JButton backToMenuButton = new JButton("BACK TO MENU");
-        backToMenuButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        backToMenuButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
+        backToMenuButton.setPreferredSize(new Dimension(200, 55));
         backToMenuButton.setBackground(grey);
         backToMenuButton.setForeground(Color.WHITE);
         backToMenuButton.setFocusable(false);
         backToMenuButton.addActionListener(actionEvent -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             frame.dispose();
             main = new Main();
@@ -87,16 +88,17 @@ public class GameOver extends JFrame {
 
         // * Quit button
         JButton quitButton = new JButton("QUIT");
-        quitButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        quitButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
+        quitButton.setPreferredSize(new Dimension(200, 55));
         quitButton.setBackground(grey);
         quitButton.setForeground(Color.WHITE);
         quitButton.setFocusable(false);
         quitButton.addActionListener(actionEvent -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             frame.dispose();
+            System.out.println("THANK YOU FOR PLAYING");
         });
 
         btnPanel.add(startButton);
@@ -108,26 +110,20 @@ public class GameOver extends JFrame {
 
         if (Main.isFullScreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gameWinner.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 200));
-            btnPanel.setLayout(new GridLayout(4, 1, 10, 30));
-            startButton.setPreferredSize(new Dimension(300, 100));
-            backToMenuButton.setPreferredSize(new Dimension(250, 100));
-            quitButton.setPreferredSize(new Dimension(300, 100));
-        }
-        else {
-            frame.setSize(screenSize);
-            gameWinner.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 100));
-            btnPanel.setLayout(new GridLayout(3, 1, 10, 20));
-            startButton.setPreferredSize(new Dimension(200, 55));
-            backToMenuButton.setPreferredSize(new Dimension(200, 55));
-            quitButton.setPreferredSize(new Dimension(200, 55));
         }
 
         frame.add(gameMenu);
+        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+    }
+
+    public void playSE(int i) {
+
+        soundEffect.setFile(i);
+        soundEffect.play();
     }
 }

@@ -1,4 +1,10 @@
+package main;
 
+import data.DataStorage;
+import data.SaveData;
+import entity.Ball;
+import entity.Paddle;
+import main.Main;
 
 import java.awt.*;
 import java.util.Random;
@@ -7,17 +13,17 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // * SCREEN SETTINGS
-    static int screenWidth = 1000;
-    static int screenHeight = (int)(screenWidth * (0.5555));
+    static int screenWidth = Main.isFullScreen ? Main.frame.getWidth() : 1000;
+    static int screenHeight = Main.isFullScreen ? Main.frame.getHeight() : (int) (Main.screenWidth * (0.5555));
     static Dimension screenSize = new Dimension(screenWidth,screenHeight);
-    static int ballDiameter = 20;
-    static int paddleWidth = 25;
-    static int paddleHeight = 100;
+    static int ballDiameter = Main.isFullScreen ? 35 : 20;
+    static int paddleWidth = Main.isFullScreen ? 40 : 25;
+    static int paddleHeight = Main.isFullScreen ? GamePanel.screenHeight / 5 : 100;
 
     // * FPS
     int FPS = 60;
 
-    // * Obeject
+    // * SYSTEM
     KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     Image image;
@@ -25,11 +31,11 @@ public class GamePanel extends JPanel implements Runnable {
     Paddle paddle1;
     Paddle paddle2;
     Ball ball;
-    Score score;
+    public static Score score;
     GameOver over;
     Pause pause;
     Random random;
-
+    static SaveData saveData = new SaveData();
     Color grey = new Color(17, 17, 17);
     Color green = new Color(125, 183, 86);
 
@@ -67,17 +73,24 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void startGameThread() {
 
+//        saveData.load();
+
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void stopGameThread() {
 
+        History.add(String.valueOf(score));
+
+        saveData.save();
+        saveData.load();
+
         over = new GameOver();
         Main.gameFrame.dispose();
 
         gameThread = null;
-        newBall();
+        ball.stop();
         Score.player1 = 0;
         Score.player2 = 0;
     }
@@ -85,52 +98,37 @@ public class GamePanel extends JPanel implements Runnable {
     //! 1 UPDATE : update information such as character position
     //! 2 DRAW : draw the screen with updated information
 
-    @Override // * Gameloop the core of our game (Delta loop)
+    @Override
     public void run() {
-
-        double drawInterval = (double) 1000000000 /FPS;
-        double delta = 0;
+        double drawInterval = 1000000000.0 / FPS;
+        double delta = 0.0;
         long lastTime = System.nanoTime();
-        long currentTime;
 
         while (gameThread != null) {
-
-            currentTime = System.nanoTime();
+            long currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if (delta >= 1) {
+            if (delta >= 1.0) {
                 update();
                 checkCollision();
                 repaint();
                 delta--;
             }
-
         }
+
     }
 
     public void update() {
 
         if (gameState == playState) {
 
-            if (keyH.WPressed) {
-                paddle1.y -= Paddle.paddleSpeed;
-            }
-            if (keyH.SPressed) {
-                paddle1.y += Paddle.paddleSpeed;
-            }
-
-            if (keyH.upPressed) {
-                paddle2.y -= Paddle.paddleSpeed;
-            }
-            if (keyH.downPressed) {
-                paddle2.y += Paddle.paddleSpeed;
-            }
+            paddle1.y -= (keyH.WPressed) ? Paddle.paddleSpeed : 0;
+            paddle1.y += (keyH.SPressed) ? Paddle.paddleSpeed : 0;
+            paddle2.y -= (keyH.upPressed) ? Paddle.paddleSpeed : 0;
+            paddle2.y += (keyH.downPressed) ? Paddle.paddleSpeed : 0;
 
             ball.move();
-        }
-        if (gameState == pauseState) {
-
         }
 
     }
@@ -141,104 +139,75 @@ public class GamePanel extends JPanel implements Runnable {
         int addedX = random.nextInt(2);
 
         if (gameState == playState) {
-            // * stops paddle from going out of bounds
-            if (paddle1.y <= 0) {
-                paddle1.y = 0;
-            }
-            if (paddle1.y >= (screenHeight - paddleHeight)) {
-                paddle1.y = screenHeight - paddleHeight;
-            }
 
-            if (paddle2.y <= 0) {
-                paddle2.y = 0;
-            }
-            if (paddle2.y >= (screenHeight - paddleHeight)) {
-                paddle2.y = screenHeight - paddleHeight;
-            }
+            // * Stops paddle1 from going out of bounds
+            paddle1.y = (paddle1.y <= 0) ? 0 : Math.min(paddle1.y, screenHeight - paddleHeight);
 
-            // * ball collision with paddle
+            // * Stops paddle2 from going out of bounds
+            paddle2.y = (paddle2.y <= 0) ? 0 : Math.min(paddle2.y, screenHeight - paddleHeight);
 
-            // * paddle1 w/ ball collision
+
+        // * Ball collision with paddle
+            // * Paddle1 w/ ball collision
             if (ball.intersects(paddle1)) {
 
                 playSE(0);
-                ball.XVelocity = Math.abs(ball.XVelocity);
-                ball.XVelocity += addedX; //increase speed
-                if (ball.YVelocity > 0) {
-                    ball.YVelocity++; //increase speed
-                } else {
-                    ball.YVelocity--;
-                }
-                ball.setXDirection(ball.XVelocity);
+//                ball.XVelocity = Math.abs(ball.XVelocity);
+//                ball.XVelocity++; //increase speed
+//
+//                if (ball.YVelocity > 0) {
+//                    ball.YVelocity++; //increase speed
+//                } else {
+//                    ball.YVelocity--;
+//                }
+                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 8); // Increase speed and limit XVelocity to a maximum of 5
+
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // Increase or decrease speed based on YVelocity sign
+
+                ball.setXDirection(ball.XVelocity); //! Normal
+//                ball.setXDirection(ball.XVelocity + addedX); //! Hard
                 ball.setYDirection(ball.YVelocity);
-                ball.hitCounter++;
+
             }
 
-            // * paddle2 w/ ball collision
+            // * Paddle2 w/ ball collision
             if (ball.intersects(paddle2)) {
 
                 playSE(0);
-                ball.XVelocity = Math.abs(ball.XVelocity);
-                ball.XVelocity += addedX; //increase speed
 
-                if (ball.YVelocity > 0) {
-                    ball.YVelocity++; //increase speed
-                } else {
-                    ball.YVelocity--;
-                }
-                ball.setXDirection(-ball.XVelocity);
+                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 8); // Increase speed and limit XVelocity to a maximum of 5
+
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // Increase or decrease speed based on YVelocity sign
+
+                ball.setXDirection(-ball.XVelocity); //! Normal
+//                ball.setXDirection(-ball.XVelocity - addedX); //! Hard
                 ball.setYDirection(ball.YVelocity);
-                ball.hitCounter++;
+
             }
 
-            // * ball collision with top & bottom border
-            if (ball.y <= 0) {
-                playSE(1);
-                ball.setYDirection(-ball.YVelocity);
-            }
-            if (ball.y >= screenHeight - ball.diameter) {
+            // * Ball collision with top & bottom border
+            if (ball.y <= 0 || ball.y >= screenHeight - ballDiameter) {
                 playSE(1);
                 ball.setYDirection(-ball.YVelocity);
             }
 
-            // * score update
-            if (ball.x < 0) {
-                Score.player2++;
+            // * Score update
+            if (ball.x < 0 || ball.x > screenWidth - ballDiameter) {
+                if (ball.x < 0) {
+                    Score.player2++;
+                } else {
+                    Score.player1++;
+                }
                 playSE(2);
                 newBall();
-                System.out.println(score);
             }
 
-            if (ball.x > screenWidth - ballDiameter) {
-                Score.player1++;
-                playSE(2);
-                newBall();
-                System.out.println(score);
-            }
-
-            // * End game
-            if (Score.player1 == 3) {
-                GameOver.winnerId = 1;
+            // * End the game
+            if (Score.player1 == 3 || Score.player2 == 3) {
+                GameOver.winnerId = Score.player1 == 3 ? 1 : 2;
                 ball.XVelocity = 0;
                 ball.YVelocity = 0;
-
                 stopGameThread();
-
-                System.out.println("==================");
-                System.out.println("= Player 1 Wins! =");
-                System.out.println("==================");
-            }
-
-            if (Score.player2 == 3) {
-                GameOver.winnerId = 2;
-                ball.XVelocity = 0;
-                ball.YVelocity = 0;
-
-                stopGameThread();
-
-                System.out.println("==================");
-                System.out.println("= Player 2 Wins! =");
-                System.out.println("==================");
             }
         }
 

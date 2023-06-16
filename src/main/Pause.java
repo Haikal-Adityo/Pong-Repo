@@ -1,4 +1,7 @@
+package main;
 
+import main.GamePanel;
+import main.Main;
 
 import java.awt.*;
 
@@ -9,7 +12,7 @@ public class Pause {
 
     GamePanel gp;
     Graphics2D g2;
-    
+
     Color greyT = new Color(17, 17, 17, 71);
 
     public Pause(GamePanel gp) {
@@ -30,13 +33,7 @@ public class Pause {
             g.setColor(greyT);
             g.fillRect(0,0, gameWidth, gameHeight);
 
-            if (Main.isFullScreen) {
-                g2.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 150));
-            }
-            else {
-                g2.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 100));
-            }
-
+            g2.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, Main.isFullScreen ? 150 : 100));
             g2.setColor(Color.WHITE);
             g2.drawString(text, x, y);
         }
@@ -48,12 +45,7 @@ public class Pause {
         int x;
         int length = 0;
 
-        if (Main.isFullScreen) {
-            length = (int)g2.getFontMetrics(new Font(Main.pixelType.getName(), Font.PLAIN, 150)).getStringBounds(text, g2).getWidth();
-        }
-        else {
-            length = (int)g2.getFontMetrics(new Font(Main.pixelType.getName(), Font.PLAIN, 100)).getStringBounds(text, g2).getWidth();
-        }
+        length = (int)g2.getFontMetrics(new Font(Main.pixelType.getName(), Font.PLAIN, Main.isFullScreen ? 150 : 100)).getStringBounds(text, g2).getWidth();
 
         x = GamePanel.screenWidth/2 - length/2;
 

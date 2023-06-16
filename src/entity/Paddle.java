@@ -1,17 +1,15 @@
+package entity;
+
+import main.KeyHandler;
+import main.Main;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class Paddle extends Rectangle {
-    static int paddleSpeed = 10;
+    public static int paddleSpeed = Main.isFullScreen ? 15 : 10;;
     int id;
+
+    KeyHandler keyH = new KeyHandler();
 
     Color red = new Color(242, 22, 70);
     Color blue = new Color(0, 102, 176);
@@ -21,16 +19,9 @@ public class Paddle extends Rectangle {
         this.id = id;
     }
 
-
     public void draw(Graphics2D g) {
 
-        if (id == 1) {
-            g.setColor(blue);
-        }
-        else {
-            g.setColor(red);
-        }
-
+        g.setColor(id == 1 ? blue : red);
         g.fillRect(x, y, width, height);
     }
 

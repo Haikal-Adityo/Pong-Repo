@@ -1,3 +1,5 @@
+package main;
+
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -5,7 +7,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 
-public class Music {
+public class SoundEffect {
 
     Clip clip;
     File[] soundURL = new File[10];
@@ -13,12 +15,21 @@ public class Music {
     static float previousVolume = 0;
     static float currentVolume = -17;
     static boolean mute = false;
-    static long clipTimePosition;
 
-    public Music() {
+    public SoundEffect() {
 
-        File bgm = new File("sound/BGM.wav");
-        soundURL[0] = bgm;
+        String[] soundPaths = {
+                "sound/Paddle.wav",
+                "sound/Wall.wav",
+                "sound/Score.wav",
+                "sound/SelectBeep.wav"
+        };
+
+        File[] soundFiles = new File[soundPaths.length];
+        for (int i = 0; i < soundPaths.length; i++) {
+            soundFiles[i] = new File(soundPaths[i]);
+            soundURL[i] = soundFiles[i];
+        }
     }
 
     public void setFile(int i) {
@@ -50,27 +61,20 @@ public class Music {
         clip.stop();
     }
 
-    public void pause() {
-        clipTimePosition = clip.getMicrosecondPosition();
-        clip.stop();
-    }
-
-    public void resume() {
-        clip.setMicrosecondPosition(clipTimePosition);
-        clip.start();
-    }
-    public void volumeMute() {
-        if (mute == false) {
+    public static void volumeMute() {
+        if (!mute) {
             previousVolume = currentVolume;
             currentVolume = -80.0f;
             fc.setValue(currentVolume);
             mute = true;
+            System.out.println("Muted");
         }
-        else if (mute == true) {
+        else {
             currentVolume = previousVolume;
+            fc.setValue(currentVolume);
             mute = false;
+            System.out.println("Not muted");
         }
     }
 
 }
-

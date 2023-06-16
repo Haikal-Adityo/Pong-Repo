@@ -1,4 +1,11 @@
+package main;
 
+import entity.Ball;
+import entity.Paddle;
+import main.GamePanel;
+import main.Main;
+import main.Music;
+import main.SoundEffect;
 
 import java.awt.*;
 import javax.swing.*;
@@ -6,34 +13,36 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class SettingFrame extends JFrame implements ChangeListener {
-    static final int screenWidth = 1000;
-    static final int screenHeight = (int)(screenWidth * (0.5555));
-    static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
+public class SettingFrame extends JFrame {
     Color grey = new Color(17, 17, 17);
-
-    static JLabel musicLabel;
-    static JLabel soundEffectLabel;
-    static JSlider musicSlider;
-    static JSlider soundEffectSlider;
 
     Main main;
     SoundEffect soundEffect = new SoundEffect();
+    public static boolean musicIsMuted = false;
+    public static boolean soundIsMuted = false;
 
     public static boolean easy;
     public static boolean normal;
     public static boolean hard;
 
+    ImageIcon xIcon;
+    ImageIcon checkIcon;
+
+    GridBagConstraints gbc = new GridBagConstraints();
+
     public SettingFrame() {
 
+//        xIcon = new ImageIcon("icons/cross.png");
+//        checkIcon = new ImageIcon("icons/check.png");
+
         JFrame frame = new JFrame();
-        frame.setTitle("PONG");
-        frame.setSize(screenSize);
         frame.setBackground(grey);
+        frame.setTitle("PONG");
+        frame.setSize(Main.screenSize);
 
         // * setting menu
         JPanel settingMenu = new JPanel();
-        settingMenu.setBorder(new EmptyBorder(50, 5, 45, 5));
+        settingMenu.setBorder(new EmptyBorder(50, 5, 5, 5));
         settingMenu.setLayout(new BorderLayout());
         settingMenu.setBackground(grey);
 
@@ -44,19 +53,20 @@ public class SettingFrame extends JFrame implements ChangeListener {
 
         // * SETTINGS LAYOUT
         JPanel layout = new JPanel(new GridBagLayout());
-        layout.setBorder(new EmptyBorder(5, 5, 45, 5));
+        layout.setBorder(new EmptyBorder(5, 5, 5, 5));
         layout.setBackground(grey);
 
         // * SLIDERS PANEL
-        JPanel sliderPanel = new JPanel(new GridLayout(2, 2, 50, 30));
-        sliderPanel.setBackground(grey);
+        JPanel soundPanel = new JPanel(new GridLayout(3, 2, 50, 30));
+        soundPanel.setBackground(grey);
 
-        musicLabel = new JLabel("GAME MUSIC ", SwingConstants.LEFT);
+        // * MUSIC
+        JLabel musicLabel = new JLabel("GAME MUSIC ", SwingConstants.LEFT);
         musicLabel.setForeground(Color.white);
         musicLabel.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
-        sliderPanel.add(musicLabel);
+        soundPanel.add(musicLabel);
 
-        musicSlider = new JSlider(-40, 6);
+        JSlider musicSlider = new JSlider(-40, 6);
         musicSlider.setValue((int) Music.currentVolume);
         if (musicSlider.getValue() <= -40.0) {
             musicSlider.setValue(-40);
@@ -73,15 +83,34 @@ public class SettingFrame extends JFrame implements ChangeListener {
             }
             Music.fc.setValue(Music.currentVolume);
         });
-        sliderPanel.add(musicSlider);
+        soundPanel.add(musicSlider);
 
-        soundEffectLabel = new JLabel("SOUND EFFECTS", SwingConstants.LEFT);
+        JCheckBox musicCheckBox = new  JCheckBox();
+        musicCheckBox.setPreferredSize(new Dimension(100, 50));
+        musicCheckBox.setText("Music");
+        musicCheckBox.setForeground(Color.white);
+        musicCheckBox.setBackground(grey);
+        musicCheckBox.setFocusable(false);
+        musicCheckBox.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
+        musicCheckBox.addActionListener(e -> {
+
+            soundEffect.setFile(3);
+            soundEffect.play();
+
+            musicIsMuted = !musicIsMuted;
+            Music.volumeMute();
+        } );
+        if (musicIsMuted) {
+            musicCheckBox.setSelected(true);
+        }
+
+        // * SOUND EFFECTS
+        JLabel soundEffectLabel = new JLabel("SOUND EFFECTS", SwingConstants.LEFT);
         soundEffectLabel.setForeground(Color.white);
         soundEffectLabel.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
-        sliderPanel.add(soundEffectLabel);
+        soundPanel.add(soundEffectLabel);
 
-
-        soundEffectSlider = new JSlider(-40, 6);
+        JSlider soundEffectSlider = new JSlider(-40, 6);
         soundEffectSlider.setValue((int) SoundEffect.currentVolume);
         if (soundEffectSlider.getValue() <= -40.0) {
             soundEffectSlider.setValue(-40);
@@ -97,66 +126,56 @@ public class SettingFrame extends JFrame implements ChangeListener {
             }
             SoundEffect.fc.setValue(SoundEffect.currentVolume);
         });
-        sliderPanel.add(soundEffectSlider);
+        soundPanel.add(soundEffectSlider);
+
+        JCheckBox soundEffectCheckBox = new  JCheckBox();
+        soundEffectCheckBox.setPreferredSize(new Dimension(100, 50));
+        soundEffectCheckBox.setText("Sound Effect");
+        soundEffectCheckBox.setForeground(Color.white);
+        soundEffectCheckBox.setBackground(grey);
+        soundEffectCheckBox.setFocusable(false);
+        soundEffectCheckBox.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
+        soundEffectCheckBox.addActionListener(e -> {
+
+            soundEffect.setFile(3);
+            soundEffect.play();
+
+            soundIsMuted = !soundIsMuted;
+            SoundEffect.volumeMute();
+        } );
+        if (soundIsMuted) {
+            soundEffectCheckBox.setSelected(true);
+        }
+        soundPanel.add(musicCheckBox);
+        soundPanel.add(soundEffectCheckBox);
+
 
         // * SETTINGS PANEL
-        JPanel settingPanel = new JPanel(new GridLayout(2, 1, 50, 30));
+        JPanel settingPanel = new JPanel(new GridLayout(2, 1, 50, 50));
         settingPanel.setBackground(grey);
 
         // * FULL SCREEN BUTTON
-        JButton fullButton = new JButton("FULL");
-        fullButton.setFont(new Font("Dialog", Font.BOLD, 15));
+        JButton fullButton = new JButton("FULL SCREEN");
+        fullButton.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, Main.isFullScreen ? 30 : 25));
+        fullButton.setSize(new Dimension(200, 55));
         fullButton.setBackground(grey);
         fullButton.setForeground(Color.WHITE);
         fullButton.setFocusable(false);
         fullButton.addActionListener(actionEvent -> {
+
             soundEffect.setFile(3);
             soundEffect.play();
 
             Main.fullScreenClicked = !Main.fullScreenClicked;
+            System.out.println(frame.getWidth() + frame.getHeight());
 
             if (Main.fullScreenClicked) {
-
                 Main.isFullScreen = true;
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-                // * set the gamepanel
-                GamePanel.screenWidth = frame.getWidth();
-                GamePanel.screenHeight = frame.getHeight();
-
-                GamePanel.ballDiameter = 35;
-                GamePanel.paddleWidth = 40;
-                GamePanel.paddleHeight = GamePanel.screenHeight / 5;
-                Paddle.paddleSpeed = 15;
-                Ball.initialSpeed = 10;
-
-                // * size change
-//                gameTitle.setFont(new Font(pixelType.getName(), Font.BOLD, 200));
-//                btnPanel.setLayout(new GridLayout(4, 1, 10, 30));
-//                startButton.setPreferredSize(new Dimension(300, 100));
-//                quitButton.setPreferredSize(new Dimension(300, 100));
-//                fullButton.setPreferredSize(new Dimension(300, 100));
             } else { //! Not fullscreen
-
                 Main.isFullScreen = false;
-                frame.setSize(screenSize);
+                frame.setSize(Main.screenSize);
                 frame.setLocationRelativeTo(null);
-
-                // * set the gamepanel
-                GamePanel.screenWidth = 1000;
-                GamePanel.screenHeight = (int) (screenWidth * (0.5555));
-
-                GamePanel.ballDiameter = 20;
-                GamePanel.paddleWidth = 25;
-                GamePanel.paddleHeight = 100;
-                Paddle.paddleSpeed = 10;
-                Ball.initialSpeed = 5;
-                // * size change
-//                gameTitle.setFont(new Font(pixelType.getName(), Font.BOLD, 100));
-//                btnPanel.setLayout(new GridLayout(3, 1, 10, 20));
-//                startButton.setPreferredSize(new Dimension(250, 50));
-//                quitButton.setPreferredSize(new Dimension(250, 50));
-//                fullButton.setPreferredSize(new Dimension(250, 50));
             }
 
         });
@@ -164,8 +183,9 @@ public class SettingFrame extends JFrame implements ChangeListener {
 
 
         // * BACK BUTTON
-        JButton backButton = new JButton("x");
-        backButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        JButton backButton = new JButton("BACK");
+        backButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
+        backButton.setPreferredSize(new Dimension(200, 55));
         backButton.setBackground(grey);
         backButton.setForeground(Color.WHITE);
         backButton.setFocusable(false);
@@ -179,28 +199,23 @@ public class SettingFrame extends JFrame implements ChangeListener {
         });
         settingPanel.add(backButton);
 
-
         if (Main.isFullScreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
-        else {
-            frame.setSize(screenSize);
-        }
 
         settingMenu.add(layout, BorderLayout.CENTER);
-        layout.add(sliderPanel);
-        layout.add(settingPanel);
+        gbc.insets.top = 30;
+        layout.add(soundPanel, gbc);
+        gbc.gridy = 1;
+        layout.add(settingPanel, gbc);
 
         frame.add(settingMenu);
+        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
     }
 
 }
