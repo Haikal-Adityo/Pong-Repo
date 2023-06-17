@@ -152,7 +152,6 @@ public class Main extends JFrame {
 
         if (isFullScreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            System.out.println("Main is fullscreen");
         }
 
         frame.add(gameMenu);

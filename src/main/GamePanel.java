@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable {
     // * SCREEN SETTINGS
     static int screenWidth;
     static int screenHeight;
-    static Dimension screenSize;
+    Dimension screenSize = new Dimension(screenWidth,screenHeight);
     static int ballDiameter;
     static int paddleWidth;
     static int paddleHeight;
@@ -63,9 +63,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
 
+        // * SCREEN SETTINGS
         screenWidth = Main.isFullScreen ? Main.frame.getWidth() : 1000;
         screenHeight = Main.isFullScreen ? Main.frame.getHeight() : (int) (Main.screenWidth * (0.5555));
-        Dimension screenSize = new Dimension(screenWidth,screenHeight);
         ballDiameter = Main.isFullScreen ? 30 : 20;
         paddleWidth = Main.isFullScreen ? 30 : 25;
         paddleHeight = Main.isFullScreen ? GamePanel.screenHeight / 7 : 100;
@@ -164,12 +164,19 @@ public class GamePanel extends JPanel implements Runnable {
 
                 playSE(0);
 
-                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 8); // Increase speed and limit XVelocity to a maximum of 5
+                if (gameDifficulty == easy) {
+                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 5); // * Increase speed and limit XVelocity to a maximum of 5
+                }
+                if (gameDifficulty == normal) {
+                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 10); // * Increase speed and limit XVelocity to a maximum of 10
+                }
+                if (gameDifficulty == hard) {
+                    ball.XVelocity = Math.abs(ball.XVelocity) + 1; // * Increase speed and XVelocity does not have a limit
+                }
 
-                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // Increase or decrease speed based on YVelocity sign
+                ball.setXDirection(ball.XVelocity);
 
-                ball.setXDirection(ball.XVelocity); //! Normal
-//                ball.setXDirection(ball.XVelocity + addedX); //! Hard
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // * Increase or decrease speed based on YVelocity sign
                 ball.setYDirection(ball.YVelocity);
 
             }
@@ -179,12 +186,19 @@ public class GamePanel extends JPanel implements Runnable {
 
                 playSE(0);
 
-                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 8); // Increase speed and limit XVelocity to a maximum of 5
+                if (gameDifficulty == easy) {
+                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 5); // * Increase speed and limit XVelocity to a maximum of 5
+                }
+                if (gameDifficulty == normal) {
+                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 10); // * Increase speed and limit XVelocity to a maximum of 10
+                }
+                if (gameDifficulty == hard) {
+                    ball.XVelocity = Math.abs(ball.XVelocity) + 1; // * Increase speed and XVelocity does not have a limit
+                }
 
-                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // Increase or decrease speed based on YVelocity sign
+                ball.setXDirection(-ball.XVelocity);
 
-                ball.setXDirection(-ball.XVelocity); //! Normal
-//                ball.setXDirection(-ball.XVelocity - addedX); //! Hard
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // * Increase or decrease speed based on YVelocity sign
                 ball.setYDirection(ball.YVelocity);
 
             }

@@ -169,12 +169,10 @@ public class SettingFrame extends JFrame {
             if (Main.fullScreenClicked) {
                 Main.isFullScreen = true;
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                System.out.println("Fullscreen");
             } else { //! Not fullscreen
                 Main.isFullScreen = false;
                 frame.setSize(Main.screenSize);
                 frame.setLocationRelativeTo(null);
-                System.out.println("Not Fullscreen");
             }
 
         });

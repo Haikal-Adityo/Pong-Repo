@@ -26,7 +26,15 @@ public class Ball extends Rectangle {
         super(ballX, ballY, ballWidth, ballHeight);
         random = new Random();
 
-        initialSpeed = Main.isFullScreen ? 8 : 3;
+        if (GamePanel.gameDifficulty == GamePanel.easy) {
+            initialSpeed = Main.isFullScreen ? 6 : 3;
+        }
+        if (GamePanel.gameDifficulty == GamePanel.normal) {
+            initialSpeed = 5;
+        }
+        if (GamePanel.gameDifficulty == GamePanel.hard) {
+            initialSpeed = 8;
+        }
 
         int randomXDirection = random.nextBoolean() ? -1 : 1;
         setXDirection(randomXDirection * initialSpeed);
