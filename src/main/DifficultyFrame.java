@@ -9,11 +9,13 @@ public class DifficultyFrame extends JFrame {
     static final int screenWidth = 1000;
     static final int screenHeight = (int)(screenWidth * (0.5555));
     static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
-    static SettingFrame settingFrame;
     public static GameFrame gameFrame;
     public static JFrame frame;
     SoundEffect soundEffect = new SoundEffect();
-    GamePanel gamePanel;
+
+    public int easy = 1;
+    public int medium = 2;
+    public int hard = 3;
 
     public DifficultyFrame(){
 
@@ -32,12 +34,10 @@ public class DifficultyFrame extends JFrame {
         JPanel btnPanel = new JPanel();
         btnPanel.setLayout(new GridLayout(3, 1, 10, 20));
         btnPanel.setBackground(grey);
-//        btnPanel.setLayout(new GridBagLayout());
 
         JLabel difficultyTitle = new JLabel("DIFFICULTY", SwingConstants.CENTER);
         difficultyTitle.setForeground(Color.white);
         difficultyTitle.setFont(new Font( Main.pixelType.getName(), Font.BOLD, 100));
-//        gameMenu.add(difficultyTitle, BorderLayout.NORTH);
 
         JButton easyButton = new JButton("EASY");
         easyButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
@@ -51,7 +51,9 @@ public class DifficultyFrame extends JFrame {
             playSE(3);
 
             frame.dispose();
-            GamePanel.gameDifficulty = 1;
+
+            GamePanel.gameDifficulty = easy;
+
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
 
@@ -73,7 +75,7 @@ public class DifficultyFrame extends JFrame {
             playSE(3);
 
             frame.dispose();
-            GamePanel.gameDifficulty = 2;
+            GamePanel.gameDifficulty = medium;
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
             if (Main.isFullScreen) {
@@ -93,7 +95,7 @@ public class DifficultyFrame extends JFrame {
             playSE(3);
 
             frame.dispose();
-            GamePanel.gameDifficulty = 3;
+            GamePanel.gameDifficulty = hard;
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
             if (Main.isFullScreen) {

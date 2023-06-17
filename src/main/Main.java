@@ -127,7 +127,7 @@ public class Main extends JFrame {
         });
 
         // * BACK BUTTON
-        JButton quitButton = new JButton("BACK");
+        JButton quitButton = new JButton("QUIT");
         quitButton.setPreferredSize(new Dimension(200, 55));
         quitButton.setFont(new Font(pixelType.getName(), Font.BOLD, isFullScreen ? 30 : 25));
         quitButton.setBackground(grey);

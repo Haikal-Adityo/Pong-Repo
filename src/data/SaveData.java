@@ -1,6 +1,5 @@
 package data;
 
-import main.GamePanel;
 import main.History;
 
 import java.io.*;

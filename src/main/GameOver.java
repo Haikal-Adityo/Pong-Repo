@@ -15,6 +15,7 @@ public class GameOver extends JFrame {
     String winner;
     Main main;
     GameFrame gameFrame;
+    DifficultyFrame difficultyFrame;
 
     SoundEffect soundEffect = new SoundEffect();
 
@@ -40,12 +41,7 @@ public class GameOver extends JFrame {
         btnPanel.setBackground(grey);
 
         // * Game Title
-        if (winnerId == 1) {
-            winner = "PLAYER 1 WIN!";
-        }
-        else if (winnerId == 2) {
-            winner = "PLAYER 2 WIN!";
-        }
+        winner = (winnerId == 1) ? "PLAYER 1 WIN!" : "PLAYER 2 WIN!";
 
         JLabel gameWinner = new JLabel(winner, SwingConstants.CENTER);
         gameWinner.setForeground(Color.white);
@@ -65,9 +61,9 @@ public class GameOver extends JFrame {
             GamePanel.saveData.load();
 
             frame.dispose();
-            Main.difficultyFrame = new DifficultyFrame();
+            difficultyFrame = new DifficultyFrame();
             if (Main.isFullScreen) {
-                Main.difficultyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                difficultyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
         });
 
