@@ -18,8 +18,9 @@ public class Main extends JFrame {
     public static final int screenHeight = (int)(screenWidth * (0.5555));
     public static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
     public static GameFrame gameFrame;
-    public SettingFrame settingFrame;
+    public static SettingFrame settingFrame;
     public static JFrame frame;
+    public static DifficultyFrame difficultyFrame;
 
     static Music music = new Music();
     static SoundEffect soundEffect = new SoundEffect();
@@ -83,9 +84,11 @@ public class Main extends JFrame {
             playSE(3);
 
             frame.dispose();
-            gameFrame = new GameFrame();
+
+            difficultyFrame = new DifficultyFrame();
+
             if (isFullScreen) {
-                gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                difficultyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
 
         });
@@ -149,6 +152,7 @@ public class Main extends JFrame {
 
         if (isFullScreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            System.out.println("Main is fullscreen");
         }
 
         frame.add(gameMenu);

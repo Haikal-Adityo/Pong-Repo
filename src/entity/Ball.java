@@ -16,7 +16,7 @@ public class Ball extends Rectangle {
     Random random;
     public int XVelocity;
     public int YVelocity;
-    public static int initialSpeed = Main.isFullScreen ? 6 : 3;
+    public static int initialSpeed;
 
     Color white = new Color(254, 241, 209);
     Color yellow = new Color(255, 255, 51);
@@ -25,6 +25,8 @@ public class Ball extends Rectangle {
     public Ball(int ballX, int ballY, int ballWidth, int ballHeight) {
         super(ballX, ballY, ballWidth, ballHeight);
         random = new Random();
+
+        initialSpeed = Main.isFullScreen ? 8 : 3;
 
         int randomXDirection = random.nextBoolean() ? -1 : 1;
         setXDirection(randomXDirection * initialSpeed);

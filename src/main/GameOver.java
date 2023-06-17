@@ -65,9 +65,9 @@ public class GameOver extends JFrame {
             GamePanel.saveData.load();
 
             frame.dispose();
-            Main.gameFrame = new GameFrame();
+            Main.difficultyFrame = new DifficultyFrame();
             if (Main.isFullScreen) {
-                Main.gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                Main.difficultyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
         });
 

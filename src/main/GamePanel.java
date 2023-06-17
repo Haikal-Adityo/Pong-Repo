@@ -13,12 +13,12 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // * SCREEN SETTINGS
-    static int screenWidth = Main.isFullScreen ? Main.frame.getWidth() : 1000;
-    static int screenHeight = Main.isFullScreen ? Main.frame.getHeight() : (int) (Main.screenWidth * (0.5555));
-    static Dimension screenSize = new Dimension(screenWidth,screenHeight);
-    static int ballDiameter = Main.isFullScreen ? 35 : 20;
-    static int paddleWidth = Main.isFullScreen ? 40 : 25;
-    static int paddleHeight = Main.isFullScreen ? GamePanel.screenHeight / 5 : 100;
+    static int screenWidth;
+    static int screenHeight;
+    static Dimension screenSize;
+    static int ballDiameter;
+    static int paddleWidth;
+    static int paddleHeight;
 
     // * FPS
     int FPS = 60;
@@ -44,6 +44,12 @@ public class GamePanel extends JPanel implements Runnable {
     public static int playState = 1;
     public static int pauseState = 2;
 
+    // * GAME DIFFICULTY
+    public static int gameDifficulty = 0;
+    public static int easy = 1;
+    public static int normal = 2;
+    public static int hard = 3;
+
     // * call paddle and ball
     public void newPaddle() {
 
@@ -56,6 +62,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public GamePanel() {
+
+        screenWidth = Main.isFullScreen ? Main.frame.getWidth() : 1000;
+        screenHeight = Main.isFullScreen ? Main.frame.getHeight() : (int) (Main.screenWidth * (0.5555));
+        Dimension screenSize = new Dimension(screenWidth,screenHeight);
+        ballDiameter = Main.isFullScreen ? 30 : 20;
+        paddleWidth = Main.isFullScreen ? 30 : 25;
+        paddleHeight = Main.isFullScreen ? GamePanel.screenHeight / 7 : 100;
 
         newPaddle();
         newBall();
@@ -73,8 +86,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void startGameThread() {
 
-//        saveData.load();
-
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -87,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
         saveData.load();
 
         over = new GameOver();
-        Main.gameFrame.dispose();
+        DifficultyFrame.gameFrame.dispose();
 
         gameThread = null;
         ball.stop();
@@ -152,14 +163,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (ball.intersects(paddle1)) {
 
                 playSE(0);
-//                ball.XVelocity = Math.abs(ball.XVelocity);
-//                ball.XVelocity++; //increase speed
-//
-//                if (ball.YVelocity > 0) {
-//                    ball.YVelocity++; //increase speed
-//                } else {
-//                    ball.YVelocity--;
-//                }
+
                 ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 8); // Increase speed and limit XVelocity to a maximum of 5
 
                 ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // Increase or decrease speed based on YVelocity sign

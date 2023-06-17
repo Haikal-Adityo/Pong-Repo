@@ -94,8 +94,7 @@ public class SettingFrame extends JFrame {
         musicCheckBox.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
         musicCheckBox.addActionListener(e -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             musicIsMuted = !musicIsMuted;
             Music.volumeMute();
@@ -137,8 +136,7 @@ public class SettingFrame extends JFrame {
         soundEffectCheckBox.setFont(new Font(Main.pixelType.getName(), Font.PLAIN, 50));
         soundEffectCheckBox.addActionListener(e -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             soundIsMuted = !soundIsMuted;
             SoundEffect.volumeMute();
@@ -163,8 +161,7 @@ public class SettingFrame extends JFrame {
         fullButton.setFocusable(false);
         fullButton.addActionListener(actionEvent -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             Main.fullScreenClicked = !Main.fullScreenClicked;
             System.out.println(frame.getWidth() + frame.getHeight());
@@ -172,10 +169,12 @@ public class SettingFrame extends JFrame {
             if (Main.fullScreenClicked) {
                 Main.isFullScreen = true;
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                System.out.println("Fullscreen");
             } else { //! Not fullscreen
                 Main.isFullScreen = false;
                 frame.setSize(Main.screenSize);
                 frame.setLocationRelativeTo(null);
+                System.out.println("Not Fullscreen");
             }
 
         });
@@ -191,8 +190,7 @@ public class SettingFrame extends JFrame {
         backButton.setFocusable(false);
         backButton.addActionListener(actionEvent -> {
 
-            soundEffect.setFile(3);
-            soundEffect.play();
+            playSE(3);
 
             frame.dispose();
             main = new Main();
@@ -216,6 +214,12 @@ public class SettingFrame extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+    }
+
+    public void playSE(int i) {
+
+        soundEffect.setFile(i);
+        soundEffect.play();
     }
 
 }
