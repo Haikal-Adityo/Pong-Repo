@@ -13,12 +13,12 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // * SCREEN SETTINGS
-    static int screenWidth;
-    static int screenHeight;
+    static int screenWidth = 1000;
+    static int screenHeight = (int) (Main.screenWidth * (0.5555));
     Dimension screenSize = new Dimension(screenWidth,screenHeight);
-    static int ballDiameter;
-    static int paddleWidth;
-    static int paddleHeight;
+    static int ballDiameter = 20;
+    static int paddleWidth = 25;
+    static int paddleHeight = 100;
 
     // * FPS
     int FPS = 60;
