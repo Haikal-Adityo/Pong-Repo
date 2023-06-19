@@ -1,14 +1,13 @@
 package entity;
 
-import main.KeyHandler;
 import main.Main;
 
 import java.awt.*;
 
 public class Paddle extends Rectangle {
 
-    public int paddleSpeed = Main.isFullScreen ? 15 : 10;;
-    int id;
+    private int paddleSpeed = Main.isFullScreen ? 15 : 10;;
+    private final int id;
 
     Color red = new Color(242, 22, 70);
     Color blue = new Color(0, 102, 176);
@@ -16,6 +15,18 @@ public class Paddle extends Rectangle {
     public Paddle(int paddleX, int paddleY, int paddleWidth, int paddleHeight, int id) {
         super(paddleX, paddleY, paddleWidth, paddleHeight);
         this.id = id;
+    }
+
+    public int getPaddleSpeed() {
+        return paddleSpeed;
+    }
+
+    public void setPaddleSpeed(int paddleSpeed) {
+        this.paddleSpeed = paddleSpeed;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void draw(Graphics2D g) {

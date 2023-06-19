@@ -8,9 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 public class Main extends JFrame {
 
-    public static final int screenWidth = 1000;
-    public static final int screenHeight = (int)(screenWidth * (0.5555));
-    public static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
+    public static int screenWidth = 1000;
+    public static int screenHeight = (int)(screenWidth * (0.5555));
+    public static Dimension screenSize = new Dimension(screenWidth,screenHeight);
     public static SettingFrame settingFrame;
     public static JFrame frame;
     public static DifficultyFrame difficultyFrame;
@@ -119,7 +119,7 @@ public class Main extends JFrame {
             frame.dispose();
         });
 
-        // * BACK BUTTON
+        // * QUIT BUTTON
         JButton quitButton = new JButton("QUIT");
         quitButton.setPreferredSize(new Dimension(200, 55));
         quitButton.setFont(new Font(pixelType.getName(), Font.BOLD, isFullScreen ? 30 : 25));
@@ -130,6 +130,7 @@ public class Main extends JFrame {
 
             playSE(3);
 
+            GamePanel.saveData.save();
             frame.dispose();
 
             System.out.println("THANK YOU FOR PLAYING!");

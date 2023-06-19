@@ -131,10 +131,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (gameState == playState) {
 
-            paddle1.y -= (keyH.WPressed) ? paddle1.paddleSpeed : 0;
-            paddle1.y += (keyH.SPressed) ? paddle1.paddleSpeed : 0;
-            paddle2.y -= (keyH.upPressed) ? paddle2.paddleSpeed : 0;
-            paddle2.y += (keyH.downPressed) ? paddle2.paddleSpeed : 0;
+            paddle1.y -= (keyH.WPressed) ? paddle1.getPaddleSpeed() : 0;
+            paddle1.y += (keyH.SPressed) ? paddle1.getPaddleSpeed() : 0;
+            paddle2.y -= (keyH.upPressed) ? paddle2.getPaddleSpeed() : 0;
+            paddle2.y += (keyH.downPressed) ? paddle2.getPaddleSpeed() : 0;
 
             ball.move();
         }
@@ -158,8 +158,8 @@ public class GamePanel extends JPanel implements Runnable {
                 playSE(0);
 
                 int maxVelocity = switch (gameDifficulty) {
-                    case easy -> 5;
-                    case normal -> 10;
+                    case easy -> Main.isFullScreen ? 10 : 5;
+                    case normal -> Main.isFullScreen ? 20 : 10;
                     case hard -> Integer.MAX_VALUE;
                     default -> 0; // or handle an invalid game difficulty
                 };
@@ -213,7 +213,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             // * End the game
             if (Score.player1 == 11 || Score.player2 == 11) {
-                GameOver.winnerId = Score.player1 == 3 ? 1 : 2;
+                GameOver.winnerId = Score.player1 == 11 ? 1 : 2;
                 ball.XVelocity = 0;
                 ball.YVelocity = 0;
                 stopGameThread();

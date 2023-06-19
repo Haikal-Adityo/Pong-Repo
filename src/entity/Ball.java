@@ -21,10 +21,10 @@ public class Ball extends Rectangle {
             initialSpeed = Main.isFullScreen ? 6 : 3;
         }
         if (GamePanel.gameDifficulty == GamePanel.normal) {
-            initialSpeed = 5;
+            initialSpeed =  Main.isFullScreen ? 10 : 5;
         }
         if (GamePanel.gameDifficulty == GamePanel.hard) {
-            initialSpeed = 8;
+            initialSpeed =  Main.isFullScreen ? 16 : 8;
         }
 
         int randomXDirection = random.nextBoolean() ? -1 : 1;

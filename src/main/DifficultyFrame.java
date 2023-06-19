@@ -51,7 +51,7 @@ public class DifficultyFrame extends JFrame {
 
             frame.dispose();
 
-            GamePanel.gameDifficulty = easy;
+            GamePanel.gameDifficulty = easy; // 1
 
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
@@ -74,9 +74,11 @@ public class DifficultyFrame extends JFrame {
             playSE(3);
 
             frame.dispose();
-            GamePanel.gameDifficulty = medium;
+            GamePanel.gameDifficulty = medium; // 2
+
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
+
             if (Main.isFullScreen) {
                 gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
@@ -94,9 +96,11 @@ public class DifficultyFrame extends JFrame {
             playSE(3);
 
             frame.dispose();
-            GamePanel.gameDifficulty = hard;
+            GamePanel.gameDifficulty = hard; // 3
+
             System.out.println("Difficulty: " + GamePanel.gameDifficulty);
             gameFrame = new GameFrame();
+
             if (Main.isFullScreen) {
                 gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }

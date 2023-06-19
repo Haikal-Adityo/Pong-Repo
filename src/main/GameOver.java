@@ -87,7 +87,9 @@ public class GameOver extends JFrame {
 
             playSE(3);
 
+            GamePanel.saveData.save();
             frame.dispose();
+
             System.out.println("THANK YOU FOR PLAYING");
         });
 
