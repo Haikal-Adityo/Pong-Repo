@@ -1,23 +1,16 @@
 package main;
 
-import data.DataStorage;
-import data.SaveData;
-import entity.Ball;
-import entity.Paddle;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import static main.GamePanel.saveData;
 
 public class Main extends JFrame {
 
     public static final int screenWidth = 1000;
     public static final int screenHeight = (int)(screenWidth * (0.5555));
     public static final Dimension screenSize = new Dimension(screenWidth,screenHeight);
-    public static GameFrame gameFrame;
     public static SettingFrame settingFrame;
     public static JFrame frame;
     public static DifficultyFrame difficultyFrame;

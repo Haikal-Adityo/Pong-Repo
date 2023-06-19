@@ -21,19 +21,9 @@ public class SettingFrame extends JFrame {
     public static boolean musicIsMuted = false;
     public static boolean soundIsMuted = false;
 
-    public static boolean easy;
-    public static boolean normal;
-    public static boolean hard;
-
-    ImageIcon xIcon;
-    ImageIcon checkIcon;
-
     GridBagConstraints gbc = new GridBagConstraints();
 
     public SettingFrame() {
-
-//        xIcon = new ImageIcon("icons/cross.png");
-//        checkIcon = new ImageIcon("icons/check.png");
 
         JFrame frame = new JFrame();
         frame.setBackground(grey);
@@ -110,7 +100,7 @@ public class SettingFrame extends JFrame {
         soundPanel.add(soundEffectLabel);
 
         JSlider soundEffectSlider = new JSlider(-40, 6);
-        soundEffectSlider.setValue((int) SoundEffect.currentVolume);
+        soundEffectSlider.setValue((int) soundEffect.currentVolume);
         if (soundEffectSlider.getValue() <= -40.0) {
             soundEffectSlider.setValue(-40);
         }
@@ -118,12 +108,12 @@ public class SettingFrame extends JFrame {
         soundEffectSlider.setBackground(grey);
         soundEffectSlider.addChangeListener(e -> {
 
-            SoundEffect.currentVolume = soundEffectSlider.getValue();
-            if (SoundEffect.currentVolume == -40) {
-                SoundEffect.currentVolume = -80;
+            soundEffect.currentVolume = soundEffectSlider.getValue();
+            if (soundEffect.currentVolume == -40) {
+                soundEffect.currentVolume = -80;
 
             }
-            SoundEffect.fc.setValue(SoundEffect.currentVolume);
+            soundEffect.fc.setValue(soundEffect.currentVolume);
         });
         soundPanel.add(soundEffectSlider);
 
@@ -139,7 +129,7 @@ public class SettingFrame extends JFrame {
             playSE(3);
 
             soundIsMuted = !soundIsMuted;
-            SoundEffect.volumeMute();
+            soundEffect.volumeMute();
         } );
         if (soundIsMuted) {
             soundEffectCheckBox.setSelected(true);

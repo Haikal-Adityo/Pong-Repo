@@ -1,18 +1,15 @@
 package main;
 
-import main.GamePanel;
-import main.Main;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
+
     public boolean WPressed, SPressed;
     public boolean upPressed, downPressed;
 
     GamePanel gp;
 
-    public KeyHandler() {};
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }

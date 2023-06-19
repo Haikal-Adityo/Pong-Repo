@@ -1,12 +1,8 @@
 package main;
 
-import data.DataStorage;
-import data.SaveData;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Arrays;
 
 public class History extends JFrame{
 

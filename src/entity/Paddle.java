@@ -6,10 +6,9 @@ import main.Main;
 import java.awt.*;
 
 public class Paddle extends Rectangle {
-    public static int paddleSpeed = Main.isFullScreen ? 15 : 10;;
-    int id;
 
-    KeyHandler keyH = new KeyHandler();
+    public int paddleSpeed = Main.isFullScreen ? 15 : 10;;
+    int id;
 
     Color red = new Color(242, 22, 70);
     Color blue = new Color(0, 102, 176);

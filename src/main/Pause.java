@@ -1,14 +1,11 @@
 package main;
 
-import main.GamePanel;
-import main.Main;
-
 import java.awt.*;
 
 public class Pause {
 
-    static int gameWidth;
-    static int gameHeight;
+    int gameWidth;
+    int gameHeight;
 
     GamePanel gp;
     Graphics2D g2;

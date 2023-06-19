@@ -1,14 +1,7 @@
 package entity;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import main.*;
 
 public class Ball extends Rectangle {
@@ -16,11 +9,9 @@ public class Ball extends Rectangle {
     Random random;
     public int XVelocity;
     public int YVelocity;
-    public static int initialSpeed;
+    public int initialSpeed;
 
     Color white = new Color(254, 241, 209);
-    Color yellow = new Color(255, 255, 51);
-    Color red = new Color(225, 61, 12);
 
     public Ball(int ballX, int ballY, int ballWidth, int ballHeight) {
         super(ballX, ballY, ballWidth, ballHeight);

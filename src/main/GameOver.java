@@ -1,10 +1,5 @@
 package main;
 
-import data.SaveData;
-import main.GameFrame;
-import main.Main;
-import main.SoundEffect;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +9,6 @@ public class GameOver extends JFrame {
     static int winnerId;
     String winner;
     Main main;
-    GameFrame gameFrame;
     DifficultyFrame difficultyFrame;
 
     SoundEffect soundEffect = new SoundEffect();

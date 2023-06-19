@@ -1,10 +1,6 @@
 package main;
 
-import main.GamePanel;
-import main.Main;
-
 import java.awt.*;
-
 
 public class Score {
 

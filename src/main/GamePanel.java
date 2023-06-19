@@ -1,10 +1,8 @@
 package main;
 
-import data.DataStorage;
 import data.SaveData;
 import entity.Ball;
 import entity.Paddle;
-import main.Main;
 
 import java.awt.*;
 import java.util.Random;
@@ -36,7 +34,6 @@ public class GamePanel extends JPanel implements Runnable {
     Pause pause;
     Random random;
     static SaveData saveData = new SaveData();
-    Color grey = new Color(17, 17, 17);
     Color green = new Color(125, 183, 86);
 
     // * GAME STATE
@@ -46,19 +43,19 @@ public class GamePanel extends JPanel implements Runnable {
 
     // * GAME DIFFICULTY
     public static int gameDifficulty = 0;
-    public static int easy = 1;
-    public static int normal = 2;
-    public static int hard = 3;
+    public static final int easy = 1;
+    public static final int normal = 2;
+    public static final int hard = 3;
 
     // * call paddle and ball
     public void newPaddle() {
-
-        paddle1 = new Paddle(0, (screenHeight/2)-(paddleHeight/2), paddleWidth, paddleHeight, 1);
-        paddle2 = new Paddle(screenWidth-paddleWidth, (screenHeight/2)-(paddleHeight/2), paddleWidth, paddleHeight, 2);
+        paddle1 = new Paddle(0,(screenHeight/2)-(paddleHeight/2),paddleWidth,paddleHeight,1);
+        paddle2 = new Paddle(screenWidth-paddleWidth,(screenHeight/2)-(paddleHeight/2),paddleWidth,paddleHeight,2);
     }
 
     public void newBall() {
-        ball = new Ball((screenWidth / 2) - (ballDiameter / 2), (screenHeight / 2) - (ballDiameter / 2), ballDiameter, ballDiameter);
+        random = new Random();
+        ball = new Ball((screenWidth/2)-(ballDiameter/2),random.nextInt(screenHeight-ballDiameter),ballDiameter,ballDiameter);
     }
 
     public GamePanel() {
@@ -134,10 +131,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (gameState == playState) {
 
-            paddle1.y -= (keyH.WPressed) ? Paddle.paddleSpeed : 0;
-            paddle1.y += (keyH.SPressed) ? Paddle.paddleSpeed : 0;
-            paddle2.y -= (keyH.upPressed) ? Paddle.paddleSpeed : 0;
-            paddle2.y += (keyH.downPressed) ? Paddle.paddleSpeed : 0;
+            paddle1.y -= (keyH.WPressed) ? paddle1.paddleSpeed : 0;
+            paddle1.y += (keyH.SPressed) ? paddle1.paddleSpeed : 0;
+            paddle2.y -= (keyH.upPressed) ? paddle2.paddleSpeed : 0;
+            paddle2.y += (keyH.downPressed) ? paddle2.paddleSpeed : 0;
 
             ball.move();
         }
@@ -145,9 +142,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void checkCollision() {
-        random = new Random();
-
-        int addedX = random.nextInt(2);
 
         if (gameState == playState) {
 
@@ -161,46 +155,43 @@ public class GamePanel extends JPanel implements Runnable {
         // * Ball collision with paddle
             // * Paddle1 w/ ball collision
             if (ball.intersects(paddle1)) {
-
                 playSE(0);
 
-                if (gameDifficulty == easy) {
-                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 5); // * Increase speed and limit XVelocity to a maximum of 5
-                }
-                if (gameDifficulty == normal) {
-                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 10); // * Increase speed and limit XVelocity to a maximum of 10
-                }
-                if (gameDifficulty == hard) {
-                    ball.XVelocity = Math.abs(ball.XVelocity) + 1; // * Increase speed and XVelocity does not have a limit
-                }
+                int maxVelocity = switch (gameDifficulty) {
+                    case easy -> 5;
+                    case normal -> 10;
+                    case hard -> Integer.MAX_VALUE;
+                    default -> 0; // or handle an invalid game difficulty
+                };
 
+                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, maxVelocity);
                 ball.setXDirection(ball.XVelocity);
 
-                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // * Increase or decrease speed based on YVelocity sign
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1;
                 ball.setYDirection(ball.YVelocity);
 
+                System.out.println("Ball speed: " + ball.XVelocity);
             }
+
 
             // * Paddle2 w/ ball collision
             if (ball.intersects(paddle2)) {
-
                 playSE(0);
 
-                if (gameDifficulty == easy) {
-                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 5); // * Increase speed and limit XVelocity to a maximum of 5
-                }
-                if (gameDifficulty == normal) {
-                    ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, 10); // * Increase speed and limit XVelocity to a maximum of 10
-                }
-                if (gameDifficulty == hard) {
-                    ball.XVelocity = Math.abs(ball.XVelocity) + 1; // * Increase speed and XVelocity does not have a limit
-                }
+                int maxVelocity = switch (gameDifficulty) {
+                    case easy -> 5;
+                    case normal -> 10;
+                    case hard -> Integer.MAX_VALUE;
+                    default -> 0; // or handle an invalid game difficulty
+                };
 
+                ball.XVelocity = Math.min(Math.abs(ball.XVelocity) + 1, maxVelocity);
                 ball.setXDirection(-ball.XVelocity);
 
-                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1; // * Increase or decrease speed based on YVelocity sign
+                ball.YVelocity += (ball.YVelocity > 0) ? 1 : -1;
                 ball.setYDirection(ball.YVelocity);
 
+                System.out.println("Ball speed: " + ball.XVelocity);
             }
 
             // * Ball collision with top & bottom border
@@ -221,7 +212,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // * End the game
-            if (Score.player1 == 3 || Score.player2 == 3) {
+            if (Score.player1 == 11 || Score.player2 == 11) {
                 GameOver.winnerId = Score.player1 == 3 ? 1 : 2;
                 ball.XVelocity = 0;
                 ball.YVelocity = 0;

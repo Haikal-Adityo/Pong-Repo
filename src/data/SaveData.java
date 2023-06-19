@@ -6,8 +6,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class SaveData {
-    DataStorage ds;
-    History history;
+    public DataStorage ds;
 
     public void save() {
         try {

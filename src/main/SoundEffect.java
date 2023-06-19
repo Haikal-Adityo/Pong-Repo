@@ -11,10 +11,10 @@ public class SoundEffect {
 
     Clip clip;
     File[] soundURL = new File[10];
-    static FloatControl fc;
-    static float previousVolume = 0;
-    static float currentVolume = -17;
-    static boolean mute = false;
+    FloatControl fc;
+    float previousVolume = 0;
+    float currentVolume = -17;
+    boolean mute = false;
 
     public SoundEffect() {
 
@@ -61,7 +61,7 @@ public class SoundEffect {
         clip.stop();
     }
 
-    public static void volumeMute() {
+    public void volumeMute() {
         if (!mute) {
             previousVolume = currentVolume;
             currentVolume = -80.0f;
