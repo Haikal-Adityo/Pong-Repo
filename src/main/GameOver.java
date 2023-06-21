@@ -105,7 +105,7 @@ public class GameOver extends JFrame {
         }
 
         frame.add(gameMenu);
-        frame.setUndecorated(true);
+//        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

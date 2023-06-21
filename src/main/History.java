@@ -84,7 +84,7 @@ public class History extends JFrame{
         layout.add(backButton, gbc);
 
         frame.add(panel);
-        frame.setUndecorated(true);
+//        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

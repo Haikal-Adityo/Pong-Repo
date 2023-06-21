@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     Pause pause;
     Random random;
     static SaveData saveData = new SaveData();
-    Color green = new Color(125, 183, 86);
+    Color green = new Color(143, 215, 96);
 
     // * GAME STATE
     public int gameState = 0;

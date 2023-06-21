@@ -196,7 +196,7 @@ public class SettingFrame extends JFrame {
         layout.add(settingPanel, gbc);
 
         frame.add(settingMenu);
-        frame.setUndecorated(true);
+//        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

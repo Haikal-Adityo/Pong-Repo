@@ -39,7 +39,7 @@ public class DifficultyFrame extends JFrame {
         difficultyTitle.setFont(new Font( Main.pixelType.getName(), Font.BOLD, 100));
 
         JButton easyButton = new JButton("EASY");
-        easyButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        easyButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
         easyButton.setBackground(grey);
         easyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         easyButton.setForeground(Color.WHITE);
@@ -63,7 +63,7 @@ public class DifficultyFrame extends JFrame {
         });
 
         JButton mediumButton = new JButton("MEDIUM");
-        mediumButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        mediumButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
         mediumButton.setPreferredSize(new Dimension(200, 50));
         mediumButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         mediumButton.setBackground(grey);
@@ -85,7 +85,7 @@ public class DifficultyFrame extends JFrame {
         });
 
         JButton hardButton = new JButton("HARD");
-        hardButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, 25));
+        hardButton.setFont(new Font(Main.pixelType.getName(), Font.BOLD, Main.isFullScreen ? 30 : 25));
         hardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         hardButton.setBackground(grey);
         hardButton.setPreferredSize(new Dimension(200, 50));
@@ -129,7 +129,7 @@ public class DifficultyFrame extends JFrame {
         }
 
         frame.add(gameMenu);
-        frame.setUndecorated(true);
+//        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
